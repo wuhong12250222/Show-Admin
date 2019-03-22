@@ -1,0 +1,12 @@
+body,ul,li,ol,dl {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+a {
+  text-decoration: none;
+}
+body,html {
+  height: 100%;
+  width: 100%;
+}
