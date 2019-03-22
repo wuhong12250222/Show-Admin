@@ -1,16 +1,16 @@
 <template>
   <div class="login-wrap">
     <div class="login-content">
-      <el-form label-position="top" label-width="80px" :model="loginForm">
-      <el-form-item label="用户名">
-        <el-input v-model="loginForm.username"></el-input>
-      </el-form-item>
-      <el-form-item label="密码">
-        <el-input v-model="loginForm.password"></el-input>
-      </el-form-item>
-      <el-form-item>
-        <el-button class="login-btn" type="primary" @click.prevent="onSubmit">登录</el-button>
-      </el-form-item>
+      <el-form :model="loginForm" class="demo-form-inline" :rules="rules">
+        <el-form-item label="用户名" prop="username">
+          <el-input v-model="loginForm.username"></el-input>
+        </el-form-item>
+        <el-form-item label="密码" prop="password">
+          <el-input v-model="loginForm.password"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" class="login-btn" @click="onSubmit">登录</el-button>
+        </el-form-item>
       </el-form>
     </div>
   </div>
@@ -22,10 +22,24 @@ export default {
   name: 'Login',
   data () {
     return {
-      loginForm:{
+      loginForm: {
         username: '',
         password: ''
+      },
+      rules: {
+        username: [
+          { required: true, message: '请输入用户名', trigger: 'blur' },
+          { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+        ],
+        password: [
+          { required: true, message: '请输入密码', trigger: 'change' }
+        ]
       }
+    }
+  },
+  methods: {
+    onSubmit () {
+      console.log('haha')
     }
   },
   components: {
