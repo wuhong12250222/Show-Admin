@@ -1,7 +1,7 @@
 <template>
   <div class="login-wrap">
     <div class="login-content">
-      <el-form :model="loginForm" class="demo-form-inline" :rules="rules">
+      <el-form :model="loginForm" class="demo-form-inline" :rules="rules" ref="loginFormEl">
         <el-form-item label="用户名" prop="username">
           <el-input v-model="loginForm.username"></el-input>
         </el-form-item>
@@ -9,7 +9,7 @@
           <el-input v-model="loginForm.password"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" class="login-btn" @click="onSubmit">登录</el-button>
+          <el-button type="primary" class="login-btn" @click="onSubmit" :plain="true">登录</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -17,7 +17,7 @@
 </template>
 
 <script>
-
+import axios from 'axios'
 export default {
   name: 'Login',
   data () {
@@ -39,7 +39,27 @@ export default {
   },
   methods: {
     onSubmit () {
-      console.log('haha')
+      this.$refs.loginFormEl.validate((valid) => {
+        if (valid) {
+          this.login()
+        } else {
+          return false
+        }
+      })
+    },
+    async login () {
+      const { data: { data, meta } } = await axios.post('http://localhost:8888/api/private/v1/login', this.loginForm)
+      // status === 200 && this.$message({ message: '恭喜你，登录成功', type: 'success' })
+      if (meta.status === 200) {
+        this.$message({
+          message: '恭喜你，登录成功',
+          type: 'success'
+        })
+        window.localStorage.setItem('token', data.token)
+        this.$router.push('/')
+      } else {
+        this.$message('登录失败')
+      }
     }
   },
   components: {
