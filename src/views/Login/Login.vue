@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import { login } from '../../api/index.js'
 export default {
   name: 'Login',
   data () {
@@ -48,7 +48,7 @@ export default {
       })
     },
     async login () {
-      const { data: { data, meta } } = await axios.post('http://localhost:8888/api/private/v1/login', this.loginForm)
+      const { data: { data, meta } } = await login(this.loginForm)
       // status === 200 && this.$message({ message: '恭喜你，登录成功', type: 'success' })
       if (meta.status === 200) {
         this.$message({

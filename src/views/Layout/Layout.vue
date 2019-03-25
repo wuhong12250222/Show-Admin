@@ -11,7 +11,7 @@
           <el-col :span="18"><div class="grid-content bg-purple-light"><h1>电商后台管理系统</h1></div></el-col>
           <el-col :span="3">
             <div class="grid-content bg-purple quit">
-              <a href="#" class="quit"><h3>退出</h3></a>
+              <el-button type="text" class="quit" @click="handleLogout"><h3>退出</h3></el-button>
             </div>
           </el-col>
         </el-row>
@@ -24,6 +24,7 @@
               class="el-menu-vertical-demo"
               @open="handleOpen"
               @close="handleClose"
+              :router="true"
               background-color="#545c64"
               text-color="#fff"
               active-text-color="#ffd04b">
@@ -33,7 +34,7 @@
                   <span>用户管理</span>
                 </template>
                 <el-menu-item-group>
-                  <el-menu-item index="1-1"><i class="el-icon-menu"></i>用户列表</el-menu-item>
+                  <el-menu-item index="/userlist"><i class="el-icon-menu"></i>用户列表</el-menu-item>
                 </el-menu-item-group>
               </el-submenu>
               <el-submenu index="2">
@@ -104,6 +105,25 @@ export default {
     },
     handleClose (key, keyPath) {
       console.log(key, keyPath)
+    },
+    handleLogout () {
+      this.$confirm('确定退出吗, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        window.localStorage.removeItem('token')
+        this.$router.replace('/login')
+        this.$message({
+          type: 'success',
+          message: '退出成功!'
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消退出'
+        })
+      })
     }
   }
 }
@@ -143,7 +163,7 @@ export default {
   width: 220px!important;
 }
 .el-submenu__title {
-  padding-left: 0px!important;
+  padding: 0px!important;
 }
 .el-main {
   background-color: #E9EEF3;

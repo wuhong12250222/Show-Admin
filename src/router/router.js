@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Login from '..//views/Login/Login.vue'
 import Layout from '../views/Layout/Layout.vue'
 import Home from '../views/Home/Home.vue'
+import UserList from '../views/User/UserList.vue'
 
 Vue.use(Router)
 
@@ -13,20 +14,18 @@ const router = new Router({
       path: '/',
       component: Layout,
       children: [
-        { path: '', component: Home }
+        { path: '', component: Home },
+        { path: '/userlist', component: UserList }
       ]
     }
   ]
 })
 router.beforeEach((to, from, next) => {
-  //  如果路由路径是/login。则直接通过
-  //  否则检验登录状态
   if (to.path === '/login') {
     return next()
   }
-  const token = window.localStorage.getItem('token')
-  if (!token) {
-    next('/login')
+  if (!window.localStorage.getItem('token')) {
+    return router.replace('/login')
   }
   next()
 })
